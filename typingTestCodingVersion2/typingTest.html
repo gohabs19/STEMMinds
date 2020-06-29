@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1 id = "header" align = center>Stem Minds Assessment Tool</h1>
+    <table align = center width = 40% id = "mainTable">
+
+        <tr>
+            <td bgcolor="#ffffcc"><h2 align = center>Begin typing when ready</h2></td>
+        </tr>
+        <!--<tr>
+            <td bgcolor="#ffffcc" id = "prompt"><h2>error</h2></td>
+        </tr>-->
+        <tr>
+            <td bgcolor="#ffffcc">
+                <table>
+                    <tr>
+                        <td id = 'textArea0'></td>
+                    </tr>
+                    <tr>
+                        <td id = 'textArea1'></td>
+                    </tr>
+                    <tr>
+                        <td id = 'textArea2'></td>
+                    </tr>
+                    <tr>
+                        <td id = 'textArea3'></td>
+                    </tr>
+                    <tr>
+                        <td id = 'textArea4'></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td bgcolor="#ffffcc">
+                <input id = 'inputField' type="text" size="50" onkeypress="getKeyPressed(event) "> 
+            </td>
+        </tr>
+        <tr>
+            <td bgcolor="#ffffcc"><span id = "timer"></span> seconds</td>
+        </tr>
+        <tr>
+            <td bgcolor="#ffffcc"><span id = "accuracy"></span>% accuracy</td>
+        </tr>
+        <tr>
+            <td bgcolor="#ffffcc"><span id = "wpm"></span> wpm</td>
+        </tr>
+        <tr>
+            <td bgcolor="#ffffcc"><button id = 'restart' onclick="restart()">Try Again!</button></td>
+        </tr>
+    </table>
+
+    
+    <script src="typingTest.js"></script>
+    
+</body>
+</html>
