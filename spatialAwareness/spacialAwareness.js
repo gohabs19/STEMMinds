@@ -6,6 +6,7 @@ let choiceElements=[0,0,0,0];//Prefilled with 4 slots. We know each question has
 let answerButton=[0,0,0,0];//Prefilled with 4 slots. We know each question has 4 choices, meaning that there are 4 buttons to be pressed.
 let answerCorrectness=[0];//Keeps track of which answers are correct and incorrect in order. 0 indicates an incorrect answer, and 1 indicates a correct answer.
 let choiceMade=[0];//Keeps track of whether a choice has been made for each question. Once a choice has been made, a choice can no longer be made.
+//0 indicates an no choice has been made, and 1 indicates a choice has been made.
 
 function genQuestion(){
     let i = 0;//Used as a counter to create the options for the questions as buttons (e.g. button 'c').
@@ -24,20 +25,24 @@ function genQuestion(){
         answerButton[i]=document.getElementById('answers' + i).appendChild(choiceElements[i]);//Append button to answers elements in HTML
         answerButton[i].id=String.fromCharCode(i+97);//Create character for ascii value
         answerButton[i].onclick = function() {
-            correctOrIncorrect(randomQuestionIndex, answers[randomQuestionIndex], this.id);//On click, we compare answer to ID to see whether the answer was correct or incorrect
-            console.log(answerCorrectness[randomQuestionIndex]);
-            if (answerCorrectness[randomQuestionIndex]===1) {//We display a green colour if correct answer chosen, red if incorrect chosen.
-                document.getElementById(this.id).style.background='#00FF00';//Green
+            console.log("Choice Made: "+choiceMade[randomQuestionIndex]);
+            if (choiceMade[randomQuestionIndex]==0) {
+                correctOrIncorrect(randomQuestionIndex, answers[randomQuestionIndex], this.id);//On click, we compare answer to ID to see whether the answer was correct or incorrect
+                console.log("Correct Answer?: "+answerCorrectness[randomQuestionIndex]);
+                if (answerCorrectness[randomQuestionIndex]===1) {//We display a green colour if correct answer chosen, red if incorrect chosen.
+                    document.getElementById(this.id).style.background='#00FF00';//Green
+                }
+                else {
+                    document.getElementById(this.id).style.background='#FF0000';//Red
+                }
             }
-            else {
-                document.getElementById(this.id).style.background='#FF0000';//Red
-            }
-        }
+        };
         i++;
     }
 }
 
 function correctOrIncorrect(randomQuestionIndex, correctAnswer, id){//Checks if the button that has been pressed is the correct or incorrect choice
+    choiceMade[randomQuestionIndex]=1;
     if (correctAnswer===id) {//Show that this is the correct answer
         console.log("Correct");
         answerCorrectness[randomQuestionIndex]=1;
