@@ -1,7 +1,7 @@
 let questions=['Which of these shapes is not possible from this net?', 'What is the answer to this question?'];
 let questionIndex = 0;
 let images=['1.jpg','2.png'];
-let choices=[['a', 'b', 'c', 'd'],['a', 'b', 'c', 'd']];
+let choices=[['a', 'b', 'c', 'd'],['e', 'f', 'g', 'h']];
 let answers=['c','a'];//Correct answers to each question
 let answerCorrectness=[0,0];//Keeps track of which answers are correct and incorrect in order. 0 indicates an incorrect answer, and 1 indicates a correct answer.
 let choiceMade=[0,0];//Keeps track of whether a choice has been made for each question. Once a choice has been made, a choice can no longer be made.
@@ -35,7 +35,7 @@ function genQuestion(){
                 else {
                     document.getElementById(this.id).style.background='#FF0000';//Red
                 }
-                nextQuestion();//Run the next question function
+                nextQuestion(questionElement);//Run the next question function
             }
         };
         i++;
@@ -54,12 +54,8 @@ function correctOrIncorrect(questionIndex, correctAnswer, id){//Checks if the bu
     }
 }
 
-function nextQuestion() {
+function nextQuestion(questionElement) {
     let i=0;//Simple counter to reset choiceElements and answerButtons arrays after each question
-    for (i=0; i<=3; i++) {//Reset these two arrays
-        choiceElements[i]=0;
-        answerButton[i]=0;
-    }
     nextQuestionButton=document.createElement('button');//Create button for next page
     nextQuestionButton.innerHTML='Next Question';//Change the contents of the next question button to say next question.
     document.getElementById('nextQuestion').appendChild(nextQuestionButton);//Create button for next page
@@ -67,6 +63,12 @@ function nextQuestion() {
         questionIndex++;
         console.log('Random Question Index: '+questionIndex);
         //document.location.reload();//Refresh HTML
+        for (i=0; i<=3; i++) {//Reset these two arrays
+            choiceElements[i]=0;
+            answerButton[i].remove();
+        }
+        questionElement.remove();
+        nextQuestionButton.remove();
         genQuestion();
     };
 }
