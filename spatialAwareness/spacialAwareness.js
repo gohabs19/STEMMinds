@@ -26,7 +26,8 @@ function genQuestion(){
         answerButton[i].id=String.fromCharCode(i+97);//Create character for ascii value
         answerButton[i].onclick = function() {
             console.log("Choice Made: "+choiceMade[randomQuestionIndex]);
-            if (choiceMade[randomQuestionIndex]==0) {
+            if (choiceMade[randomQuestionIndex]===0) {//If a choice has already been made for this question (regardless of whether it is the correct or incorrect answer), the user can not
+                //pick a new answer as a replacement.
                 correctOrIncorrect(randomQuestionIndex, answers[randomQuestionIndex], this.id);//On click, we compare answer to ID to see whether the answer was correct or incorrect
                 console.log("Correct Answer?: "+answerCorrectness[randomQuestionIndex]);
                 if (answerCorrectness[randomQuestionIndex]===1) {//We display a green colour if correct answer chosen, red if incorrect chosen.
@@ -35,6 +36,7 @@ function genQuestion(){
                 else {
                     document.getElementById(this.id).style.background='#FF0000';//Red
                 }
+                //document.getElementById('nextQuestion').createElement('button');//Create button for next page
             }
         };
         i++;
