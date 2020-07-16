@@ -3,7 +3,7 @@
 
 var tournamentID = "8688088";
 var extensionType = "json";
-var APIKey = "1v7AQ1b5yf1gQpUZ1e64lBrMWcsnRJwlYV1m1jz5";
+var APIKey = "";
 var mainTable = document.getElementById("mainTable");
 //var inputTable = document.getElementById("inputTable");
 var nameSubmit = document.getElementById("nameForm");
