@@ -1,19 +1,31 @@
 // JavaScript source code
 //<reference path="jquery.d.ts" />
 
+//res.header("Access-Control-Allow-Methods", "OPTIONS, GET, PUT, POST, DELETE");
+
 var tournamentID = "8688088";
 var extensionType = "json";
-var APIKey = "";
+var APIKey = "1v7AQ1b5yf1gQpUZ1e64lBrMWcsnRJwlYV1m1jz5";
 var mainTable = document.getElementById("mainTable");
-//var inputTable = document.getElementById("inputTable");
-var nameSubmit = document.getElementById("nameForm");
-var nameInput = document.getElementById("name");
+var addNameSubmit = document.getElementById("addNameForm");
+var addNameInput = document.getElementById("addName");
+var changeNameSubmit = document.getElementById("changeNameForm");
+var changeNameInput = document.getElementById("changeName");
+var startTournamentSubmit = document.getElementById("startTournamentForm");
+var resetTournamentSubmit = document.getElementById("resetTournamentForm");
+//var deleteNameSubmit = document.getElementById("deleteNameForm");
+//var deleteNameInput = document.getElementById("deleteName");
+//var updateButton = document.getElementById("update");
+
+window.onload = refreshPage();//Open page with refreshed content when loaded
+
 
 function refreshPage() {
     $.getJSON("https://api.challonge.com/v1/tournaments/" + tournamentID + "." + extensionType + "/?api_key=" + APIKey + "&include_participants=1",
         function showUserData(data) {
-            var i = 0;
+            console.log(data);
             var participants = data.tournament.participants;
+            var i = 0;
             var usernames = [];
             var userRankings = [];
             var mainTable = document.getElementById("mainTable");
@@ -31,11 +43,51 @@ function refreshPage() {
     );
 }
 
-window.onload = refreshPage();
-nameSubmit.onsubmit = function addUser() {
-    console.log(nameInput.value);
-    name = nameInput.value;
-    $.post("https://api.challonge.com/v1/tournaments/" + tournamentID + "/participants/bulk_add." + extensionType + "/?api_key=" + APIKey + "&participants[][name]=" + name);
-    //document.getElementById("client").reset();
+addNameSubmit.onsubmit = function addUser() {//Add name
+    var name = addNameInput.value;
+    //$.post("https://api.challonge.com/v1/tournaments/" + tournamentID + "/participants/bulk_add." + extensionType + "/?api_key=" + APIKey + "&participants[][name]=" + name);
+    var settings = {
+        "url": "https://api.challonge.com/v1/tournaments/" + tournamentID + "/participants/bulk_add." + extensionType + "/?api_key=" + APIKey + "&participants[][name]=" + name,
+        "method": "POST",
+        "timeout": 0,
+        "headers": {
+            "Cookie": "SPSI=8a3e59b60bedbe0273c9f37bb58bc998; SPSE=zXZCg5F2fi+8hHWPSQERRgUTCro6Mp4kI735K9Q8rPfMzZWtPEMxBXfXNK4/Jt4G013TFIBR+QqMTk+70s0gDA=="
+        },
+    };
+    $.ajax(settings).done(function (response) {
+        console.log(response);
+    });
     refreshPage();
+}
+startTournamentSubmit.onsubmit = function startTournament() {
+    var settings = {
+        "url": "https://api.challonge.com/v1/tournaments/" + tournamentID + "/start." + extensionType + "/?api_key=" + APIKey,
+        "method": "POST",
+        "timeout": 0,
+        "headers": {
+            "Cookie": "SPSI=8a3e59b60bedbe0273c9f37bb58bc998; SPSE=zXZCg5F2fi+8hHWPSQERRgUTCro6Mp4kI735K9Q8rPfMzZWtPEMxBXfXNK4/Jt4G013TFIBR+QqMTk+70s0gDA=="
+        },
+    };
+    $.ajax(settings).done(function (response) {
+        console.log(response);
+    });
+    refreshPage();
+    //window.location.reload(true);
+    //Location.reload();
+}
+resetTournamentSubmit.onsubmit = function resetTournament() {
+    var settings = {
+        "url": "https://api.challonge.com/v1/tournaments/" + tournamentID + "/reset." + extensionType + "/?api_key=" + APIKey,
+        "method": "POST",
+        "timeout": 0,
+        "headers": {
+            "Cookie": "SPSI=8a3e59b60bedbe0273c9f37bb58bc998; SPSE=zXZCg5F2fi+8hHWPSQERRgUTCro6Mp4kI735K9Q8rPfMzZWtPEMxBXfXNK4/Jt4G013TFIBR+QqMTk+70s0gDA=="
+        },
+    };
+    $.ajax(settings).done(function (response) {
+        console.log(response);
+    });
+    refreshPage();
+    //window.location.reload(true);
+    //Location.reload();
 }
