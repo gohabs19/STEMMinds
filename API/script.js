@@ -9,8 +9,8 @@ var APIKey = "1v7AQ1b5yf1gQpUZ1e64lBrMWcsnRJwlYV1m1jz5";
 var mainTable = document.getElementById("mainTable");
 var addNameSubmit = document.getElementById("addNameForm");
 var addNameInput = document.getElementById("addName");
-var changeNameSubmit = document.getElementById("changeNameForm");
-var changeNameInput = document.getElementById("changeName");
+//var deleteNameSubmit = document.getElementById("deleteNameForm");
+var deleteNameInput = document.getElementById("deleteName");
 var startTournamentSubmit = document.getElementById("startTournamentForm");
 var resetTournamentSubmit = document.getElementById("resetTournamentForm");
 //var deleteNameSubmit = document.getElementById("deleteNameForm");
@@ -18,7 +18,6 @@ var resetTournamentSubmit = document.getElementById("resetTournamentForm");
 //var updateButton = document.getElementById("update");
 
 window.onload = refreshPage();//Open page with refreshed content when loaded
-
 
 function refreshPage() {
     $.getJSON("https://api.challonge.com/v1/tournaments/" + tournamentID + "." + extensionType + "/?api_key=" + APIKey + "&include_participants=1",
@@ -49,6 +48,20 @@ addNameSubmit.onsubmit = function addUser() {//Add name
     var settings = {
         "url": "https://api.challonge.com/v1/tournaments/" + tournamentID + "/participants/bulk_add." + extensionType + "/?api_key=" + APIKey + "&participants[][name]=" + name,
         "method": "POST",
+        "timeout": 0,
+        "headers": {
+            "Cookie": "SPSI=8a3e59b60bedbe0273c9f37bb58bc998; SPSE=zXZCg5F2fi+8hHWPSQERRgUTCro6Mp4kI735K9Q8rPfMzZWtPEMxBXfXNK4/Jt4G013TFIBR+QqMTk+70s0gDA=="
+        },
+    };
+    $.ajax(settings).done(function (response) {
+        console.log(response);
+    });
+    refreshPage();
+}
+deleteNameInput.onclick = function deleteTournament() {
+    var settings = {
+        "url": "https://api.challonge.com/v1/tournaments/8688088/participants/127193991.json?api_key=1v7AQ1b5yf1gQpUZ1e64lBrMWcsnRJwlYV1m1jz5",
+        "method": "DELETE",
         "timeout": 0,
         "headers": {
             "Cookie": "SPSI=8a3e59b60bedbe0273c9f37bb58bc998; SPSE=zXZCg5F2fi+8hHWPSQERRgUTCro6Mp4kI735K9Q8rPfMzZWtPEMxBXfXNK4/Jt4G013TFIBR+QqMTk+70s0gDA=="
