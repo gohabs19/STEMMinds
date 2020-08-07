@@ -8,7 +8,7 @@ table {
     margin-left: 0px;
     width: 20%;
     border: none;
-    border-collapse:collapse;
+    border-collapse: collapse;
     background-color: #272A33;
 }
 
@@ -38,3 +38,4 @@ button {
     margin: 20px;
     cursor: pointer;
 }
+
