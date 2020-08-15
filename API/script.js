@@ -3,11 +3,12 @@
 
 //res.header("Access-Control-Allow-Methods", "OPTIONS, GET, PUT, POST, DELETE");
 
-var tournamentID = "8688088";
+var tournamentIndex = 0;
+var tournamentID/* = "8688088"*/;
 var extensionType = "json";
 var APIKey = "1v7AQ1b5yf1gQpUZ1e64lBrMWcsnRJwlYV1m1jz5";
 var mainTable = document.getElementById("mainTable");
-var addNameSubmit = document.getElementById("addNameForm");
+/*var addNameSubmit = document.getElementById("addNameForm");
 var addNameInput = document.getElementById("addName");
 //var deleteNameSubmit = document.getElementById("deleteNameForm");
 var deleteNameInput = document.getElementById("deleteName");
@@ -15,14 +16,31 @@ var startTournamentSubmit = document.getElementById("startTournamentForm");
 var resetTournamentSubmit = document.getElementById("resetTournamentForm");
 //var deleteNameSubmit = document.getElementById("deleteNameForm");
 //var deleteNameInput = document.getElementById("deleteName");
-//var updateButton = document.getElementById("update");
+//var updateButton = document.getElementById("update");*/
 
-window.onload = refreshPage();//Open page with refreshed content when loaded
+window.onload = newPage();//Open page with refreshed content when loaded
 
-function refreshPage() {
+function newPage() {
+    getTournaments();
+    pageSetup();
+    sendResults();
+}
+
+function getTournaments() {
+    $.getJSON("https://api.challonge.com/v1/tournaments." + extensionType + "/?api_key=" + APIKey,
+        function showTournaments(data) {
+            console.log(data);
+            //tournamentID = data.tournament[tournamentIndex].id;
+            tournamentID = data[tournamentIndex].tournament.id;
+            console.log(tournamentID);
+        }
+    );
+}
+
+function pageSetup() {
     $.getJSON("https://api.challonge.com/v1/tournaments/" + tournamentID + "." + extensionType + "/?api_key=" + APIKey + "&include_participants=1",
         function showUserData(data) {
-            console.log(data);
+            //console.log(data);
             var participants = data.tournament.participants;
             var i = 0;
             var usernames = [];
@@ -42,7 +60,23 @@ function refreshPage() {
     );
 }
 
-addNameSubmit.onsubmit = function addUser() {//Add name
+function sendResults() {
+    $.getJSON("https://api.challonge.com/v1/tournaments/" + tournamentID + "." + extensionType + "/?api_key=" + APIKey + "&include_participants=1",
+        function collectNameAndRank(data) {
+            var participants = data.tournament.participants;
+            var data = [];
+            var i = 0;
+            for (i = 0; i < participants.length; i++) {
+                data.push([participants[i].participant.final_rank, participants[i].participant.display_name]);
+            }
+            //console.log(data);
+        }
+    );
+}
+
+
+
+/*addNameSubmit.onsubmit = function addUser() {//Add name
     var name = addNameInput.value;
     //$.post("https://api.challonge.com/v1/tournaments/" + tournamentID + "/participants/bulk_add." + extensionType + "/?api_key=" + APIKey + "&participants[][name]=" + name);
     var settings = {
@@ -103,4 +137,4 @@ resetTournamentSubmit.onsubmit = function resetTournament() {
     refreshPage();
     //window.location.reload(true);
     //Location.reload();
-}
+}*/
