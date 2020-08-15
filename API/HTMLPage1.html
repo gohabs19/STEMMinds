@@ -29,36 +29,39 @@
 </head>
 <body>
     <table>
-    <tr>
-    <td>
-    <iframe src="https://challonge.com/stemminds/module" width="1000" height="600" frameborder="0" scrolling="auto" allowtransparency="true"></iframe>
-    </td>
-    <td>
-        <table align=center width=100% id='mainTable'>
-            <!--User Data-->
-        </table>
-        <form id="addNameForm">
-            Enter name to add to bracket: <input type="text" name="addName" id="addName">
-            <input type="submit" value="Add User" id="addSubmit">
-        </form>
-        <input type="submit" value="Delete User" id="deleteName">
-        <!--<form id="deleteNameForm">
-            <input type="submit" value="Delete User" id="deleteNameSubmit">
-        </form>-->
-        <form id="startTournamentForm">
-            <input type="submit" value="Start Tournament" id="startTournamentSubmit">
-        </form>
-        <form id="resetTournamentForm">
-            <input type="submit" value="Reset Tournament" id="resetTournamentSubmit">
-        </form>
-        <!--<form id="deleteNameForm">
-        Enter name to remove from bracket: <input type="text" name="deleteName" id="deleteName">
-        <input type="submit" value="deleteSubmit" id="deleteSubmit">
-    </form>
-    Update Webpage: <input type="submit" value="update" id="update">-->
-        <script src="script.js"></script>
-    </td>
-    </tr>
+        <tr>
+            <td>
+                <iframe src="https://challonge.com/stemminds/module" width="1000" height="600" frameborder="0" scrolling="auto" allowtransparency="true"></iframe>
+            </td>
+            <td>
+                <table align=center width=100% id='mainTable'>
+                    <!--User Data-->
+                </table>
+                <!--<form id="addNameForm">
+                    Enter name to add to bracket: <input type="text" name="addName" id="addName">
+                    <input type="submit" value="Add User" id="addSubmit">
+                </form>-->
+                <!--<input type="submit" value="Delete User" id="deleteName">-->
+                <!--<form id="deleteNameForm">
+                    <input type="submit" value="Delete User" id="deleteNameSubmit">
+                </form>-->
+                <!--<form id="startTournamentForm">
+                    <input type="submit" value="Start Tournament" id="startTournamentSubmit">
+                </form>-->
+                <!--<form id="resetTournamentForm">
+                    <input type="submit" value="Reset Tournament" id="resetTournamentSubmit">
+                </form>-->
+                <!--<form id="deleteNameForm">
+                    Enter name to remove from bracket: <input type="text" name="deleteName" id="deleteName">
+                    <input type="submit" value="deleteSubmit" id="deleteSubmit">
+                </form>
+                Update Webpage: <input type="submit" value="update" id="update">-->
+                <script src="script.js"></script>
+            </td>
+        </tr>
     </table>
+    <p id="status">Status: </p>
+    <input type="submit" value="<-" id="backButton">
+    <input type="submit" value="->" id="nextButton">
 </body>
 </html>
