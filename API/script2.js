@@ -42,11 +42,12 @@ function sleep(milliseconds) {
 function newPage() {
     getTournaments();
     //sleep(10000);
-    pageSetup();
-    sendResults();
 
     //calcSingleTournament([[1, 2, 3, 4], ['ben', 'billiam', 'brad', 'stephanie']]);
     //calcSingleTournament([[5, 2, 3, 3, 4, 1], ['stephanie', 'andrew', 'bill', 'greg', 'mac', 'anu']]);
+
+    pageSetup();
+    sendResults();
 
     sortRanks();
     populate(playerNames.length);
@@ -98,7 +99,8 @@ function getTournaments() {
                         }
                         if (singleTournamentData.tournament.participants[0].participant.final_rank != null) {
                             console.log("Tournament: " + singleTournamentID + " " + singleTournamentRankings + " " + singleTournamentNames);
-                            calcSingleTournament(singleTournamentRankings, singleTournamentNames);
+                            //sleep(10000);
+                            calcSingleTournament([singleTournamentRankings, singleTournamentNames]);
                         }
                     }
                 );
@@ -215,10 +217,10 @@ function populate(numOfPlayers) {
 function calcSingleTournament(tournamentResults) {
     // format of tournamentResults: [rank][name]
     //alert(tournamentResults[1].length);
+    //alert(tournamentResults);
 
     let i = 0;
     while (i < tournamentResults[1].length) {
-
         let nameIndex = playerNames.indexOf(tournamentResults[1][i]);
 
         if (nameIndex == -1) {
@@ -230,6 +232,7 @@ function calcSingleTournament(tournamentResults) {
 
         i++;
     }
+    alert("HI");
 }
 
 function sortRanks() {
