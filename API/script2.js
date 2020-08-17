@@ -46,14 +46,8 @@ function newPage() {
     //calcSingleTournament([[1, 2, 3, 4], ['ben', 'billiam', 'brad', 'stephanie']]);
     //calcSingleTournament([[5, 2, 3, 3, 4, 1], ['stephanie', 'andrew', 'bill', 'greg', 'mac', 'anu']]);
 
-    pageSetup();
-    sendResults();
-
-    sortRanks();
-    populate(playerNames.length);
-
     //sleep(1000);
-    tournamentData();
+    //tournamentData();
 }
 
 function tournamentData() {
@@ -232,7 +226,12 @@ function calcSingleTournament(tournamentResults) {
 
         i++;
     }
-    alert("HI");
+    //alert("HI");
+    pageSetup();
+    sendResults();
+
+    sortRanks();
+    populate(playerNames.length);
 }
 
 function sortRanks() {
