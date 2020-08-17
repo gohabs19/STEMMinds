@@ -8,6 +8,17 @@ var tournamentID/* = "8688088"*/;
 var extensionType = "json";
 var APIKey = "1v7AQ1b5yf1gQpUZ1e64lBrMWcsnRJwlYV1m1jz5";
 var mainTable = document.getElementById("mainTable");
+
+
+let playerScores = [35,40,55,2000];
+let playerNames = ['andrew','ben','john', 'anu'];
+let sortedScores = [];
+let sortedNames = [];
+let leaderboard;
+let dataLength;
+
+var listOfParticipants=[];
+
 /*var addNameSubmit = document.getElementById("addNameForm");
 var addNameInput = document.getElementById("addName");
 //var deleteNameSubmit = document.getElementById("deleteNameForm");
@@ -20,24 +31,77 @@ var resetTournamentSubmit = document.getElementById("resetTournamentForm");
 
 window.onload = newPage();//Open page with refreshed content when loaded
 
+function sleep(milliseconds) {
+    const date = Date.now();
+    let currentDate = null;
+    do {
+        currentDate = Date.now();
+    } while (currentDate - date < milliseconds);
+}
+
 function newPage() {
     getTournaments();
     pageSetup();
     sendResults();
+
+    calcSingleTournament([[1, 2, 3, 4],['ben', 'billiam', 'brad', 'stephanie']]);
+    calcSingleTournament([[5, 2, 3, 3, 4, 1],['bart', 'andrew', 'bill', 'greg', 'mac', 'anu']]);
+
+    sortRanks();
+    populate(playerNames.length);
+
+    sleep(1000);
+    tournamentData();
 }
 
 function getTournaments() {
-    $.getJSON("https://api.challonge.com/v1/tournaments." + extensionType + "/?api_key=" + APIKey,
+    $.getJSON("https://api.challonge.com/v1/tournaments." + extensionType + "/?api_key=" + APIKey + "&include_participants=1",
         function showTournaments(data) {
             console.log(data);
+            console.log("Number of tournaments: " + data.length);
+            dataLength = data.length;
             //tournamentID = data.tournament[tournamentIndex].id;
             tournamentID = data[tournamentIndex].tournament.id;
-            console.log(tournamentID);
+            tournamentURL = data[tournamentIndex].tournament.url;
+            //console.log(tournamentID);
+            //console.log(tournamentURL);
+
+            //Show data for all tournaments
+            for (i=0; i<dataLength; i++) {
+                singleTournamentID=data[i].tournament.id;
+                //console.log("Tournament: "+singleTournamentID)
+                //var listOfParticipants=[];
+                $.getJSON("https://api.challonge.com/v1/tournaments/"+singleTournamentID+"."+extensionType+ "/?api_key=" + APIKey + "&include_participants=1",
+                    function getParticipantList(singleTournamentData) {
+                        //Tournament Participants List
+                        for (j=0; j<singleTournamentData.tournament.participants.length; j++) {
+                            /*
+
+
+                                ****HERE IS WHERE I PULL THE INDIVIDUAL RANKINGS
+
+
+                            */
+                            console.log("Name: "+singleTournamentData.tournament.participants[j].participant.name+" Rank: "+singleTournamentData.tournament.participants[j].participant.final_rank);
+                            listOfParticipants.push(singleTournamentData.tournament.participants[j].participant.final_rank);
+                        }
+                    }
+                );
+                //console.log("Data for tournament "+i+": "+data[i].tournament.id+" List of participants: "+listOfParticipants);
+            }
         }
     );
+    //document.getElementById('tournamentName').innerHTML = ("Tournament Name: "+ tournamentURL);
 }
 
-function pageSetup() {
+function tournamentData() {
+    console.log("Data length: "+dataLength);
+    for (i=0; i<dataLength; i++) {
+        console.log("Data for tournament "+i+": "+data[i].tournament.id+" List of participants: "+listOfParticipants);
+    }
+}
+
+function pageSetup(){
     $.getJSON("https://api.challonge.com/v1/tournaments/" + tournamentID + "." + extensionType + "/?api_key=" + APIKey + "&include_participants=1",
         function showUserData(data) {
             //console.log(data);
@@ -73,6 +137,230 @@ function sendResults() {
         }
     );
 }
+
+function populate(numOfPlayers){
+    let i = 0;
+    let players = [];
+    let rank = [];
+    let name = [];
+    let score = [];
+
+    division = document.createElement('div');
+    document.getElementById('myList').appendChild(division)
+
+    leaderboard = document.createElement('table');
+    division.appendChild(leaderboard);
+
+    header = document.createElement('tr');
+    header.id = 'header';
+    leaderboard.appendChild(header);
+
+    rankTag = document.createElement('th');
+    rankTag.innerHTML = 'Rank';
+    header.appendChild(rankTag);
+
+    nameTag = document.createElement('th');
+    nameTag.innerHTML = 'Username';
+    header.appendChild(nameTag);
+
+    scoreTag = document.createElement('th');
+    scoreTag.innerHTML = 'Points';
+    header.appendChild(scoreTag);
+
+    while (i < numOfPlayers){
+
+        players[i] = document.createElement('tr');
+        players[i].id = 'player'+i;
+        leaderboard.appendChild(players[i]);
+
+        rank[i] = document.createElement('td');
+        if(i == 0){
+            rank[i].innerHTML = "<b>"+(i+1)+"</b>";
+        } else{
+            rank[i].innerHTML = (i+1);
+        }
+        players[i].appendChild(rank[i]);
+        
+        name[i] = document.createElement('td');
+        if(i == 0){
+            name[i].innerHTML = "<b>"+playerNames[i]+"</b>";
+        } else{
+            name[i].innerHTML = playerNames[i];
+        }
+        name[i].id = 'player'+i;
+        players[i].appendChild(name[i]);
+
+        score[i] = document.createElement('td');
+        if(i == 0){
+            score[i].innerHTML = "<b>"+Math.round(playerScores[i])+"</b>";
+        } else{
+            score[i].innerHTML = Math.round(playerScores[i]);
+        }
+        score[i].id = 'player'+i;
+        players[i].appendChild(score[i]);
+    
+        i++;
+    }
+
+}
+
+function calcSingleTournament(tournamentResults){
+    // format of tournamentResults: [rank][name]
+    //alert(tournamentResults[1].length);
+
+    let i = 0;
+    while (i < tournamentResults[1].length){
+
+        let nameIndex = playerNames.indexOf(tournamentResults[1][i]);
+
+        if (nameIndex == -1){
+            playerNames.push(tournamentResults[1][i]);
+            playerScores.push((5*tournamentResults[0].length)/(tournamentResults[0][i]));
+        } else{
+            playerScores[nameIndex] += (5*tournamentResults[0].length)/(tournamentResults[0][i]);
+        }
+        
+        i++;
+    }
+}
+
+function sortRanks(){
+    let i = 0;
+    let j = 0;
+    let greatest;
+    let greatestIndex;
+
+    while (i < playerNames.length){
+
+        greatest = 0;
+        greatestIndex = 0;
+        j = 0;
+
+        while (j < playerNames.length){
+
+            if(playerScores[j] > greatest){
+                greatest = playerScores[j];
+                greatestIndex = j;
+            }
+
+            j++;
+        }
+
+
+        sortedScores.push(playerScores[greatestIndex]);
+        sortedNames.push(playerNames[greatestIndex]);
+
+
+        playerScores[greatestIndex] = 0;
+
+        i++;
+    }
+
+    playerScores = sortedScores;
+    playerNames = sortedNames;
+}
+
+function previousTournament(){
+    $.getJSON("https://api.challonge.com/v1/tournaments." + extensionType + "/?api_key=" + APIKey,
+        function showTournaments(data) {
+            //console.log(data);
+            //console.log("Number of tournaments: " + data.length);
+            //tournamentID = data.tournament[tournamentIndex].id;
+            tournamentID = data[tournamentIndex].tournament.id;
+            tournamentURL = data[tournamentIndex].tournament.url;
+            //console.log(tournamentID);
+            //console.log(tournamentURL);
+        }
+    );
+
+    if (tournamentIndex >= 0){
+        tournamentIndex--;
+        document.getElementById('frame').src = "https://challonge.com/"+tournamentURL+"/module";
+        document.getElementById('tournamentName').innerHTML = ("Tournament Name: "+ tournamentID);
+    } else{
+        alert("There are no older tournaments");
+    }
+
+    
+}
+
+function nextTournament(){
+
+    
+    
+    $.getJSON("https://api.challonge.com/v1/tournaments." + extensionType + "/?api_key=" + APIKey,
+        function showTournaments(data) {
+            
+            console.log(data);
+            console.log("Number of tournaments: " + data.length);
+            //tournamentID = data.tournament[tournamentIndex].id;\
+            tournamentID = data[tournamentIndex].tournament.id; 
+            tournamentURL = data[tournamentIndex].tournament.url;
+            //console.log(tournamentID);
+            //console.log(tournamentURL);
+            
+        }
+    );
+    
+
+    if (tournamentIndex < dataLength){
+        tournamentIndex++;
+        document.getElementById('frame').src = "https://challonge.com/"+tournamentURL+"/module";
+        document.getElementById('tournamentName').innerHTML = ("Tournament Name: "+ tournamentURL);
+        
+    } else{
+        alert("This is the most recent tournament, number: "+tournamentIndex+'/'+dataLength);
+    }
+
+    
+}
+
+
+function calcLeaderboard(){
+    $.getJSON("https://api.challonge.com/v1/tournaments." + extensionType + "/?api_key=" + APIKey,
+        function showTournaments(data) {
+            
+            console.log(data);
+            console.log("Number of tournaments: " + data.length);
+            //tournamentID = data.tournament[tournamentIndex].id;\
+            tournamentID = data[tournamentIndex].tournament.id; 
+            tournamentURL = data[tournamentIndex].tournament.url;
+            //console.log(tournamentID);
+            //console.log(tournamentURL);
+            
+        }
+    );
+
+
+}
+
+
+
+function myFunction() {
+    // Declare variables
+    var input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById("myInput");
+    filter = input.value.toUpperCase();
+    table = leaderboard;
+    tr = table.getElementsByTagName("tr");
+  
+    // Loop through all table rows, and hide those who don't match the search query
+    for (i = 0; i < tr.length; i++) {
+      td = tr[i].getElementsByTagName("td")[1];
+      if (td) {
+        txtValue = td.textContent || td.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+          tr[i].style.display = "";
+        } else {
+          tr[i].style.display = "none";
+        }
+      }
+    }
+}
+
+
+
+
 
 
 
