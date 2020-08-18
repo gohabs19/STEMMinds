@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<style>
+canvas {
+    border:1px solid #d3d3d3;
+    background-color: #f1f1f1;
+}
+</style>
+<link rel="stylesheet" href="stemMinds.css">
+</head>
+<body onload="startGame()">
+<script src = 'codeBlocks.js'></script>
+
+<table>
+<tr><td>
+<div style="text-align:center;width:480px;">
+  <button onclick="moveup()">UP</button>
+  <button onclick="moveleft()">LEFT</button>
+  <button onclick="moveright()">RIGHT</button>
+  <button onclick="movedown()">DOWN</button>
+  <br>
+  <button onclick="loop()">BEGIN LOOP </button><input placeholder="ie. 5" id = 'loopNum'></input>
+  <button onclick="endLoop()">END LOOP</button>
+  <br>
+  <button onclick="run()" id = 'run'>RUN</button>
+  <button onclick="empty()" id = 'clear'>CLEAR</button>
+</div>
+
+<br><br>
+<div id = 'codeStage'>
+
+</div>
+<tr>
+  <td id = 'box'><a href = "typingTest.html">Next Page</a></td>
+</tr>
+
+</td></tr>
+
+</body>
+</html>
